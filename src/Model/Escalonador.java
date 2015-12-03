@@ -11,14 +11,14 @@ import java.util.List;
  */
 public class Escalonador {
 
-    List<Transacao> transacoes;
+    List<Operacao> operacoes;
     List<Operacao> transacoesGeradas;
     List<Operacao> listRead;
     List<Operacao> listWait;
-    List<Dado> dados;
+    List<Variavel> dados;
 
-    public Escalonador(List<Transacao> transacoes, List<Dado> dados) {
-        this.transacoes = transacoes;
+    public Escalonador(List<Operacao> operacoes, List<Variavel> dados) {
+        this.operacoes = operacoes;
         this.dados = dados;
         this.listRead = new ArrayList<>();
         this.listWait = new ArrayList<>();
@@ -27,19 +27,20 @@ public class Escalonador {
     public List<Operacao> escalonador() {
         transacoesGeradas = new ArrayList<>();
 
-        for (Transacao transacao : transacoes) {
-            for (Operacao operacao : transacao.getOperacoes()) {
-                if (operacao.getTipoOperacao() == 'R') {
-                    if (lockS(operacao)) {
-                        transacoesGeradas.add(operacao);
-                    }
-                } else if (operacao.getTipoOperacao() == 'W') {
-                    if (lockX(operacao)) {
-                        transacoesGeradas.add(operacao);
-                    }
+        for (Operacao operacao : operacoes) {
+            if (operacao.getTipoOperacao().equals("R")) {
+                if (lockS(operacao)) {
+                    transacoesGeradas.add(operacao);
                 }
-
+            } else if (operacao.getTipoOperacao().equals("W")) {
+                if (lockX(operacao)) {
+                    transacoesGeradas.add(operacao);
+                }
+            } else if (operacao.getTipoOperacao().equals("C")) {
+                transacoesGeradas.add(operacao);
+                unlock(operacao);
             }
+
         }
 
         return transacoesGeradas;
@@ -47,16 +48,16 @@ public class Escalonador {
 
     public boolean lockS(Operacao operacao) {
 
-        char tipoLock = operacao.getDado().getTipoLock();
+//        char tipoLock = operacao.getDado().getTipoLock();
 
-        if (tipoLock == 'U') {
-            operacao.getDado().setTipoLock('S');
+        if (operacao.getDado().getTipoLock().equals("U")) {
+            operacao.getDado().setTipoLock("S");
             listRead.add(operacao);
             return true;
-        } else if (tipoLock == 'S') {
+        } else if (operacao.getDado().getTipoLock().equals("S")) {
             listRead.add(operacao);
             return true;
-        } else if (tipoLock == 'X') {
+        } else if (operacao.getDado().getTipoLock().equals("X")) {
             listWait.add(operacao);
         }
         return false;
@@ -64,10 +65,10 @@ public class Escalonador {
 
     public boolean lockX(Operacao operacao) {
 
-        char tipoLock = operacao.getDado().getTipoLock();
+//        char tipoLock = operacao.getDado().getTipoLock();
 
-        if (tipoLock == 'U') {
-            operacao.getDado().setTipoLock('X');
+        if (operacao.getDado().getTipoLock().equals("U")) {
+            operacao.getDado().setTipoLock("X");
             return true;
         } else {
             listWait.add(operacao);
@@ -77,17 +78,23 @@ public class Escalonador {
 
     public void unlock(Operacao operacao) {
 
-        char tipoLock = operacao.getDado().getTipoLock();
+//        char tipoLock = operacao.getTipoOperacao();
 
-        if (tipoLock == 'X') {
-            operacao.getDado().setTipoLock('U');
-            //desperta fila Wait
-        } else if (tipoLock == 'S') {
+        if (operacao.getTipoOperacao().equals("X")) {
+            operacao.getDado().setTipoLock("U");
+            //desperta filaoperacao Wait
+        } else if (operacao.getTipoOperacao().equals("U")) {
             listRead.remove(operacao);
             if (listRead.isEmpty()) {
-                operacao.getDado().setTipoLock('U');
+                operacao.getDado().setTipoLock("U");
                 //desperta fila Wait
             }
+        }
+    }
+
+    public void unlock(Transacao transacao) {
+        for (Operacao operacao : transacao.getOperacoes()) {
+            unlock(operacao);
         }
     }
 

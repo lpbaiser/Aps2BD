@@ -6,35 +6,36 @@ package Model;
  * @author : Leonardo Baiser <lpbaiser@gmail.com>
  * @since : Nov 29, 2015, 8:19:11 PM
  */
-public class Dado {
+public class Variavel {
 
-    private char dado;
-    private char tipoLock;
+    private String dado;
+    private String tipoLock;
 
-    public char getDado() {
-        return dado;
-    }
-
-    public void setDado(char dado) {
-        this.dado = dado;
-    }
-
-    public char getTipoLock() {
+    public String getTipoLock() {
         return tipoLock;
     }
 
-    public void setTipoLock(char tipoLock) {
+    public void setTipoLock(String tipoLock) {
         this.tipoLock = tipoLock;
     }
 
+  
     @Override
     public boolean equals(Object obj) {
-        Dado dado = (Dado) obj;
-        if (this.dado == dado.getDado()) {
+        Variavel dado = (Variavel) obj;
+        if (this.dado.equals(dado.getDado())) {
             return true;
         }
         return false;
 //        return ((Simbolo) obj).terminal == this.terminal && ((Simbolo) obj).variavel == this.variavel;
+    }
+
+    public String getDado() {
+        return dado;
+    }
+
+    public void setDado(String dado) {
+        this.dado = dado;
     }
 
 }

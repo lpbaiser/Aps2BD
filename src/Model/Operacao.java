@@ -7,27 +7,24 @@ package Model;
  */
 public class Operacao {
     
-    private Dado dado;
-    private char tipoOperacao;
+    private Variavel dado;
+    private String tipoOperacao;
 
-    public Dado getDado() {
+    public Variavel getDado() {
         return dado;
     }
 
-    public void setDado(Dado dado) {
+    public void setDado(Variavel dado) {
         this.dado = dado;
     }
 
-    public char getTipoOperacao() {
+    public String getTipoOperacao() {
         return tipoOperacao;
     }
 
-    public void setTipoOperacao(char tipoOperacao) {
+    public void setTipoOperacao(String tipoOperacao) {
         this.tipoOperacao = tipoOperacao;
     }
-
-   
-    
     
 
 }

@@ -1,8 +1,7 @@
 package Utils;
 
-import Model.Dado;
+import Model.Variavel;
 import Model.Operacao;
-import Model.Transacao;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -18,18 +17,15 @@ public class Arquivo {
 
     private FileReader fileRead;
     private BufferedReader buffArquivo;
-    private Transacao transacao;
-    private List<Transacao> transacoes;
-    private Dado dado;
-    private List<Dado> dados;
+    private Variavel dado;
+    private List<Variavel> dados;
     private Operacao operacao;
     private List<Operacao> operacoes;
 
-    public List<Transacao> readArquivo(String path, List<Dado> dados) {
-        transacoes = new ArrayList<>();
-        int idTransacao = 0;
+    public List<Operacao> readAgenda(String path, List<Variavel> dados) {
         String linha = "";
         String t[];
+        operacoes = new ArrayList<>();
 
         try {
             fileRead = new FileReader(path);
@@ -37,35 +33,27 @@ public class Arquivo {
 
             linha = buffArquivo.readLine();
             while (linha != null) {
-                idTransacao++;
-                transacao = new Transacao();
-                operacoes = new ArrayList<>();
 
                 linha = linha.replaceAll(" ", "");
                 t = linha.split(";");
 
-                for (int i = 0; i < t.length - 1; i++) {
+                for (int i = 0; i < t.length; i++) {
 
                     operacao = new Operacao();
-                    dado = getDado(dados, t[i]);
-                    
+                    dado = getVariavel(dados, t[i]);
 
                     if (t[i].contains("W")) {
-                        
                         operacao.setDado(dado);
-                        operacao.setTipoOperacao('W');
+                        operacao.setTipoOperacao("W");
                     } else if (t[i].contains("R")) {
                         operacao.setDado(dado);
-                        operacao.setTipoOperacao('R');
+                        operacao.setTipoOperacao("R");
                     } else if (t[i].contains("C")) {
-                        operacao.setDado(null);
-                        operacao.setTipoOperacao('C');
+                        operacao.setDado(dado);
+                        operacao.setTipoOperacao("C");
                     }
                     operacoes.add(operacao);
                 }
-                transacao.setIdTransacao(idTransacao);
-                transacao.setOperacoes(operacoes);
-                transacoes.add(transacao);
                 linha = buffArquivo.readLine();
 
             }
@@ -74,10 +62,10 @@ public class Arquivo {
             System.out.println("Erro: " + ex.getMessage());
             return null;
         }
-        return transacoes;
+        return operacoes;
     }
 
-    public List<Dado> getDados(String path) {
+    public List<Variavel> getVariaveis(String path) {
         dados = new ArrayList<>();
         String linha = "";
         String aux[];
@@ -89,12 +77,23 @@ public class Arquivo {
             linha = buffArquivo.readLine();
             while (linha != null) {
                 linha = linha.replaceAll(" ", "");
-                aux = linha.split("");
+                aux = linha.split(";");
                 for (int i = 0; i < aux.length; i++) {
-                    if (aux[i].equals("(")) {
-                        dado = new Dado();
-                        dado.setDado(aux[i + 1].charAt(0));
-                        dado.setTipoLock('U');
+                    if (aux[i].contains("(")) {
+                        String p[];
+                        aux[i] = aux[i].replace(')', '(');
+                        p = aux[i].split("\\(");
+                        dado = new Variavel();
+                        dado.setDado(p[1]);
+                        dado.setTipoLock("U");
+
+                        if (!dados.contains(dado)) {
+                            dados.add(dado);
+                        }
+                    } else if (aux[i].contains("C")) {
+                        dado = new Variavel();
+                        dado.setDado(aux[i]);
+                        dado.setTipoLock("C");
                         if (!dados.contains(dado)) {
                             dados.add(dado);
                         }
@@ -111,14 +110,24 @@ public class Arquivo {
         return dados;
     }
 
-    public Dado getDado(List<Dado> dados, String dado) {
-        for (Dado d : dados) {
-            String aux = String.valueOf(d.getDado());
-            if (dado.contains(aux)){
+    public Variavel getVariavel(List<Variavel> dados, String dado) {
+        for (Variavel d : dados) {
+            if (dado.contains("(")) {
+                String p[];
+                dado = dado.replace(')', '(');
+                p = dado.split("\\(");
+                dado = p[1];
+            }
+            if (dado.equals(d.getDado())) {
                 return d;
             }
         }
         return null;
     }
 
+    public List<Operacao> writeAgenda(){
+        return null;
+    }
+    
+    
 }

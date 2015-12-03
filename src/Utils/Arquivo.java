@@ -154,6 +154,7 @@ public class Arquivo {
                 }
 
             }
+            buffwirter.append("\n");
             buffwirter.close();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());

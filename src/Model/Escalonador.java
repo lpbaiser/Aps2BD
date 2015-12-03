@@ -15,6 +15,7 @@ public class Escalonador {
     List<Operacao> transacoesGeradas;
     List<Operacao> listRead;
     List<Operacao> listWait;
+    List<Operacao> listWrite;
     List<Variavel> dados;
 
     public Escalonador(List<Operacao> operacoes, List<Variavel> dados) {
@@ -22,6 +23,7 @@ public class Escalonador {
         this.dados = dados;
         this.listRead = new ArrayList<>();
         this.listWait = new ArrayList<>();
+        this.listWrite = new ArrayList<>();
     }
 
     public List<Operacao> escalonador() {

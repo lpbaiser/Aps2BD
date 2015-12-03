@@ -25,7 +25,7 @@ public class Arquivo {
     private Transacao trasacao;
     private List<Transacao> trasacoes;
 
-    public List<Transacao> readAgenda(String path, List<Variavel> dados) {
+    public List<Operacao> readAgenda(String path, List<Variavel> dados) {
         String linha = "";
         String t[];
         trasacoes = new ArrayList<Transacao>();
@@ -47,17 +47,22 @@ public class Arquivo {
             linha = linha.replaceAll(" ", "");
             t = linha.split(";");
 
-            for (int i = 0; i < t.length - 1; i++) {
+            for (int i = 0; i < t.length; i++) {
 
                 operacao = new Operacao();
-                dado = getVariavel(dados, t[i]);
+                if (t[i].contains("(")) {
+                    dado = getVariavel(dados, t[i]);
 
-                if (t[i].contains("W")) {
-                    operacao.setDado(dado);
-                    operacao.setTipoOperacao("W");
-                } else if (t[i].contains("R")) {
-                    operacao.setDado(dado);
-                    operacao.setTipoOperacao("R");
+                    if (t[i].contains("W")) {
+                        operacao.setDado(dado);
+                        operacao.setTipoOperacao("W");
+                    } else if (t[i].contains("R")) {
+                        operacao.setDado(dado);
+                        operacao.setTipoOperacao("R");
+                    }
+                } else {
+                    operacao.setDado(null);
+                    operacao.setTipoOperacao("C");
                 }
                 operacoes.add(operacao);
             }
@@ -68,12 +73,10 @@ public class Arquivo {
                 System.out.println("ERRO: " + ex.getMessage());
             }
 
-            trasacao.setOperacoes(operacoes);
-            trasacao.setCommit(t[t.length - 1]);
-            trasacoes.add(trasacao);
+            
         }
 
-        return trasacoes;
+        return operacoes;
     }
 
     public List<Variavel> getVariaveis(String path) {

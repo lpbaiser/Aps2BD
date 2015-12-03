@@ -21,14 +21,15 @@ public class Main {
 //            System.out.println("Dado: "+dado.getDado()+" tipo: " + dado.getTipoLock());
 
         }
-        List<Transacao> list = a.readAgenda("src/Entrada/transacoes.txt", dados);
+        List<Operacao> list = a.readAgenda("src/Entrada/transacoes.txt", dados);
 
-        for (Transacao l : list) {
+        for (Operacao op : list) {
+            if (op.getDado() != null) {
 
-            for (Operacao op : l.getOperacoes()) {
-                System.out.print(" --tipo : " + op.getTipoOperacao() + " dado: " + op.getDado().getDado());
+                System.out.println(" --tipo : " + op.getTipoOperacao() + " dado: " + op.getDado().getDado());
+            } else {
+                System.out.println(" --tipo : " + op.getTipoOperacao() + " dado: NULL");
             }
-            System.out.println(" commit: " + l.getCommit());
         }
 
     }

@@ -17,8 +17,9 @@ public class Main {
 
         Arquivo a = new Arquivo();
         List<Variavel> dados = a.getVariaveis("src/Entrada/transacoes.txt");
+        
         for (Variavel dado : dados) {
-//            System.out.println("Dado: "+dado.getDado()+" tipo: " + dado.getTipoLock());
+            System.out.println("Dado: "+dado.getDado()+" tipo: " + dado.getTipoLock());
 
         }
         List<Operacao> list = a.readAgenda("src/Entrada/transacoes.txt", dados);

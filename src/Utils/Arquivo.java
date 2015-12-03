@@ -50,8 +50,8 @@ public class Arquivo {
             for (int i = 0; i < t.length; i++) {
 
                 operacao = new Operacao();
+                dado = getVariavel(dados, t[i]);
                 if (t[i].contains("(")) {
-                    dado = getVariavel(dados, t[i]);
 
                     if (t[i].contains("W")) {
                         operacao.setDado(dado);
@@ -61,7 +61,7 @@ public class Arquivo {
                         operacao.setTipoOperacao("R");
                     }
                 } else {
-                    operacao.setDado(null);
+                    operacao.setDado(dado);
                     operacao.setTipoOperacao("C");
                 }
                 operacoes.add(operacao);
@@ -73,7 +73,6 @@ public class Arquivo {
                 System.out.println("ERRO: " + ex.getMessage());
             }
 
-            
         }
 
         return operacoes;
@@ -93,26 +92,25 @@ public class Arquivo {
                 linha = linha.replaceAll(" ", "");
                 aux = linha.split(";");
                 for (int i = 0; i < aux.length; i++) {
+                    dado = new Variavel();
                     if (aux[i].contains("(")) {
                         String p[];
                         aux[i] = aux[i].replace(')', '(');
                         p = aux[i].split("\\(");
-                        dado = new Variavel();
                         dado.setDado(p[1]);
                         dado.setTipoLock("U");
 
                         if (!dados.contains(dado)) {
                             dados.add(dado);
                         }
+                    } else if (aux[i].contains("C")) {
+                        System.out.println("AUX: " + aux[i]);
+                        dado.setDado(aux[i]);
+                        dado.setTipoLock("C");
+                        if (!dados.contains(dado)) {
+                            dados.add(dado);
+                        }
                     }
-//                    else if (aux[i].contains("C")) {
-//                        dado = new Variavel();
-//                        dado.setDado(aux[i]);
-//                        dado.setTipoLock("C");
-//                        if (!dados.contains(dado)) {
-//                            dados.add(dado);
-//                        }
-//                    }
                 }
                 linha = buffArquivo.readLine();
             }

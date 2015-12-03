@@ -1,10 +1,8 @@
 package Utils;
 
 import Model.Variavel;
-import Model.Escalonador;
 import Model.Operacao;
 import Model.Transacao;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,23 +21,14 @@ public class Main {
 //            System.out.println("Dado: "+dado.getDado()+" tipo: " + dado.getTipoLock());
 
         }
-        List<Operacao> list = a.readAgenda("src/Entrada/transacoes.txt", dados);
+        List<Transacao> list = a.readAgenda("src/Entrada/transacoes.txt", dados);
 
-        for (Operacao l : list) {
+        for (Transacao l : list) {
 
-                System.out.println("tipo : " + l.getTipoOperacao() + " dado: " + l.getDado().getDado());
-        }
-
-        Escalonador e = new Escalonador(list, dados);
-        List<Operacao> operacao = new ArrayList<>();
-        operacao = e.escalonador();
-        System.out.println("\n Escalonado");
-        for (Operacao l : operacao) {
-//            if (l.getTipoOperacao() == 'C') {
-//                System.out.println("tipo : " + l.getTipoOperacao());
-//            } else {
-                System.out.println("tipo : " + l.getTipoOperacao() + " dado: " + l.getDado().getDado());
-//            }
+            for (Operacao op : l.getOperacoes()) {
+                System.out.print(" --tipo : " + op.getTipoOperacao() + " dado: " + op.getDado().getDado());
+            }
+            System.out.println(" commit: " + l.getCommit());
         }
 
     }

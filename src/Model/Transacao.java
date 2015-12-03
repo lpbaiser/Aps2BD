@@ -11,7 +11,7 @@ import java.util.List;
 public class Transacao {
 
     private List<Operacao> operacoes;
-    private int idTransacao;
+    private String commit;
 
 
     public List<Operacao> getOperacoes() {
@@ -22,13 +22,15 @@ public class Transacao {
         this.operacoes = operacoes;
     }
 
-    public int getIdTransacao() {
-        return idTransacao;
+    public String getCommit() {
+        return commit;
     }
 
-    public void setIdTransacao(int idTransacao) {
-        this.idTransacao = idTransacao;
+    public void setCommit(String commit) {
+        this.commit = commit;
     }
+
+
   
     
   

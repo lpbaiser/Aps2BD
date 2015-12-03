@@ -2,6 +2,7 @@ package Utils;
 
 import Model.Variavel;
 import Model.Operacao;
+import Model.Transacao;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -21,48 +22,58 @@ public class Arquivo {
     private List<Variavel> dados;
     private Operacao operacao;
     private List<Operacao> operacoes;
+    private Transacao trasacao;
+    private List<Transacao> trasacoes;
 
-    public List<Operacao> readAgenda(String path, List<Variavel> dados) {
+    public List<Transacao> readAgenda(String path, List<Variavel> dados) {
         String linha = "";
         String t[];
-        operacoes = new ArrayList<>();
+        trasacoes = new ArrayList<Transacao>();
 
         try {
             fileRead = new FileReader(path);
             buffArquivo = new BufferedReader(fileRead);
 
             linha = buffArquivo.readLine();
-            while (linha != null) {
-
-                linha = linha.replaceAll(" ", "");
-                t = linha.split(";");
-
-                for (int i = 0; i < t.length; i++) {
-
-                    operacao = new Operacao();
-                    dado = getVariavel(dados, t[i]);
-
-                    if (t[i].contains("W")) {
-                        operacao.setDado(dado);
-                        operacao.setTipoOperacao("W");
-                    } else if (t[i].contains("R")) {
-                        operacao.setDado(dado);
-                        operacao.setTipoOperacao("R");
-                    } else if (t[i].contains("C")) {
-                        operacao.setDado(dado);
-                        operacao.setTipoOperacao("C");
-                    }
-                    operacoes.add(operacao);
-                }
-                linha = buffArquivo.readLine();
-
-            }
-
         } catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
             return null;
         }
-        return operacoes;
+        while (linha != null) {
+
+            operacoes = new ArrayList<>();
+            trasacao = new Transacao();
+
+            linha = linha.replaceAll(" ", "");
+            t = linha.split(";");
+
+            for (int i = 0; i < t.length - 1; i++) {
+
+                operacao = new Operacao();
+                dado = getVariavel(dados, t[i]);
+
+                if (t[i].contains("W")) {
+                    operacao.setDado(dado);
+                    operacao.setTipoOperacao("W");
+                } else if (t[i].contains("R")) {
+                    operacao.setDado(dado);
+                    operacao.setTipoOperacao("R");
+                }
+                operacoes.add(operacao);
+            }
+
+            try {
+                linha = buffArquivo.readLine();
+            } catch (Exception ex) {
+                System.out.println("ERRO: " + ex.getMessage());
+            }
+
+            trasacao.setOperacoes(operacoes);
+            trasacao.setCommit(t[t.length - 1]);
+            trasacoes.add(trasacao);
+        }
+
+        return trasacoes;
     }
 
     public List<Variavel> getVariaveis(String path) {
@@ -90,14 +101,15 @@ public class Arquivo {
                         if (!dados.contains(dado)) {
                             dados.add(dado);
                         }
-                    } else if (aux[i].contains("C")) {
-                        dado = new Variavel();
-                        dado.setDado(aux[i]);
-                        dado.setTipoLock("C");
-                        if (!dados.contains(dado)) {
-                            dados.add(dado);
-                        }
                     }
+//                    else if (aux[i].contains("C")) {
+//                        dado = new Variavel();
+//                        dado.setDado(aux[i]);
+//                        dado.setTipoLock("C");
+//                        if (!dados.contains(dado)) {
+//                            dados.add(dado);
+//                        }
+//                    }
                 }
                 linha = buffArquivo.readLine();
             }
@@ -125,9 +137,8 @@ public class Arquivo {
         return null;
     }
 
-    public List<Operacao> writeAgenda(){
+    public List<Operacao> writeAgenda() {
         return null;
     }
-    
-    
+
 }

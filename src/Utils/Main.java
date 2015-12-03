@@ -1,8 +1,9 @@
 package Utils;
 
+import Model.Escalonador;
 import Model.Variavel;
 import Model.Operacao;
-import Model.Transacao;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,15 +26,22 @@ public class Main {
         List<Operacao> list = a.readAgenda("src/Entrada/transacoes.txt", dados);
 
         for (Operacao op : list) {
-            if (op.getDado() != null) {
 
-                System.out.println(" --tipo : " + op.getTipoOperacao() + " dado: " + op.getDado().getDado());
-            } else {
-                System.out.println(" --tipo : " + op.getTipoOperacao() + " dado: NULL");
-            }
+                System.out.println(" --tipo : " + op.getTipoOperacao() + " dado: " + op.getDado().getDado() + "  id: " + op.getId());
+        }
+        
+        Escalonador e = new Escalonador(list, dados);
+        
+        System.out.println("\n\nEscalonador");
+        List<Operacao> esc = e.escalonador();
+        for (Operacao es : esc) {
+            
+
+                System.out.print(es.getTipoOperacao() + es.getId()+ "(" + es.getDado().getDado()  + "); ");
+            
         }
 
-        a.writeAgenda("teste.txt", list);
+        a.writeAgenda("AgendaEscalonada.txt", esc);
     }
 
 }

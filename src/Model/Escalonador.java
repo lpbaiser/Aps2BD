@@ -13,17 +13,11 @@ public class Escalonador {
 
     List<Operacao> operacoes;
     List<Operacao> transacoesGeradas;
-    List<Operacao> listRead;
-    List<Operacao> listWait;
-    List<Operacao> listWrite;
     List<Variavel> dados;
 
     public Escalonador(List<Operacao> operacoes, List<Variavel> dados) {
         this.operacoes = operacoes;
         this.dados = dados;
-        this.listRead = new ArrayList<>();
-        this.listWait = new ArrayList<>();
-        this.listWrite = new ArrayList<>();
     }
 
     public List<Operacao> escalonador() {
@@ -40,7 +34,8 @@ public class Escalonador {
                 }
             } else if (operacao.getTipoOperacao().equals("C")) {
                 transacoesGeradas.add(operacao);
-                unlock(operacao);
+                unlockAll(operacao.getId());
+                escalonadorWait();
             }
 
         }
@@ -48,55 +43,67 @@ public class Escalonador {
         return transacoesGeradas;
     }
 
-    public boolean lockS(Operacao operacao) {
+    public void escalonadorWait() {
 
-//        char tipoLock = operacao.getDado().getTipoLock();
+        for (Operacao operacao : operacoes) {
+            if (operacao.isWait()) {
+
+                if (operacao.getTipoOperacao().equals("R")) {
+                    if (lockS(operacao)) {
+                        transacoesGeradas.add(operacao);
+                    }
+                } else if (operacao.getTipoOperacao().equals("W")) {
+                    if (lockX(operacao)) {
+                        transacoesGeradas.add(operacao);
+                    }
+                }
+                operacao.setWait(false);
+                break;
+            }
+        }
+
+    }
+
+    public boolean lockS(Operacao operacao) {
 
         if (operacao.getDado().getTipoLock().equals("U")) {
             operacao.getDado().setTipoLock("S");
-            listRead.add(operacao);
             return true;
         } else if (operacao.getDado().getTipoLock().equals("S")) {
-            listRead.add(operacao);
             return true;
         } else if (operacao.getDado().getTipoLock().equals("X")) {
-            listWait.add(operacao);
+            operacao.setWait(true);
+            System.out.println("ADD wait S: " + operacao.getDado().getDado());
         }
         return false;
     }
 
     public boolean lockX(Operacao operacao) {
 
-//        char tipoLock = operacao.getDado().getTipoLock();
-
         if (operacao.getDado().getTipoLock().equals("U")) {
             operacao.getDado().setTipoLock("X");
             return true;
         } else {
-            listWait.add(operacao);
+            operacao.setWait(true);
+            System.out.println("ADD wait X: " + operacao.getDado().getDado());
         }
         return false;
     }
 
     public void unlock(Operacao operacao) {
 
-//        char tipoLock = operacao.getTipoOperacao();
-
-        if (operacao.getTipoOperacao().equals("X")) {
+        if (operacao.getDado().getTipoLock().equals("X")) {
             operacao.getDado().setTipoLock("U");
-            //desperta filaoperacao Wait
-        } else if (operacao.getTipoOperacao().equals("U")) {
-            listRead.remove(operacao);
-            if (listRead.isEmpty()) {
-                operacao.getDado().setTipoLock("U");
-                //desperta fila Wait
-            }
+        } else if (operacao.getDado().getTipoLock().equals("S")) {
+            operacao.getDado().setTipoLock("U");
         }
     }
 
-    public void unlock(Transacao transacao) {
-        for (Operacao operacao : transacao.getOperacoes()) {
-            unlock(operacao);
+    public void unlockAll(int id) {
+        for (Operacao operacao : transacoesGeradas) {
+            if (operacao.getId() == id) {
+                unlock(operacao);
+            }
         }
     }
 

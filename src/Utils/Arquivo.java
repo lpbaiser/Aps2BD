@@ -34,6 +34,7 @@ public class Arquivo {
         String linha = "";
         String t[];
         trasacoes = new ArrayList<Transacao>();
+        int id;
 
         try {
             fileRead = new FileReader(path);
@@ -56,6 +57,8 @@ public class Arquivo {
 
                 operacao = new Operacao();
                 dado = getVariavel(dados, t[i]);
+                char c = t[i].charAt(1);
+                id = Character.getNumericValue(c);
                 if (t[i].contains("(")) {
 
                     if (t[i].contains("W")) {
@@ -69,6 +72,8 @@ public class Arquivo {
                     operacao.setDado(dado);
                     operacao.setTipoOperacao("C");
                 }
+                operacao.setId(id);
+                operacao.setWait(false);
                 operacoes.add(operacao);
             }
 
@@ -150,7 +155,7 @@ public class Arquivo {
                 if(op.getTipoOperacao().equals("C")){
                     buffwirter.append(op.getDado().getDado()+";");
                 }else{
-                    buffwirter.append(op.getTipoOperacao()+"("+op.getDado().getDado()+")"+";");
+                    buffwirter.append(op.getTipoOperacao()+op.getId()+"("+op.getDado().getDado()+")"+";");
                 }
 
             }

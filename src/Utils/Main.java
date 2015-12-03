@@ -33,6 +33,7 @@ public class Main {
             }
         }
 
+        a.writeAgenda("teste.txt", list);
     }
 
 }

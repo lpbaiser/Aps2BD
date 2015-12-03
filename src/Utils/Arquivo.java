@@ -4,9 +4,14 @@ import Model.Variavel;
 import Model.Operacao;
 import Model.Transacao;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Document: Arquivo
@@ -138,7 +143,22 @@ public class Arquivo {
         return null;
     }
 
-    public List<Operacao> writeAgenda() {
+    public List<Operacao> writeAgenda(String caminho,List<Operacao> operacao) {
+        try {
+            BufferedWriter buffwirter = new BufferedWriter(new FileWriter(caminho));
+            for (Operacao op :operacao ) {
+                if(op.getTipoOperacao().equals("C")){
+                    buffwirter.append(op.getDado().getDado()+";");
+                }else{
+                    buffwirter.append(op.getTipoOperacao()+"("+op.getDado().getDado()+")"+";");
+                }
+
+            }
+            buffwirter.close();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
         return null;
     }
 

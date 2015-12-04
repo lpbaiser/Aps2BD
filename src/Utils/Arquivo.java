@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 /**
  * Document: Arquivo
  *
- * @author : Leonardo Baiser <lpbaiser@gmail.com>
+ * @author : Leonardo Baiser <lpbaiser@gmail.com> & Emanuel Mazzer <emanuelgiroldo@gmail.com>
  * @since : Nov 26, 2015, 2:21:12 PM
  */
 public class Arquivo {

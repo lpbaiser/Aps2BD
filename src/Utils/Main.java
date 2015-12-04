@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * Document: Main
  *
- * @author : Leonardo Baiser <lpbaiser@gmail.com>
+ * @author : Leonardo Baiser <lpbaiser@gmail.com> & Emanuel Mazzer <emanuelgiroldo@gmail.com>
  * @since : Nov 26, 2015, 3:23:32 PM
  */
 public class Main {

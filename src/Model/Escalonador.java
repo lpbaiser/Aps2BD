@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Document: Escalonador
  *
- * @author : Leonardo Baiser <lpbaiser@gmail.com>
+ * @author : Leonardo Baiser <lpbaiser@gmail.com> & Emanuel Mazzer <emanuelgiroldo@gmail.com>
  * @since : Nov 29, 2015, 8:17:06 PM
  */
 public class Escalonador {

@@ -2,7 +2,7 @@ package Model;
 
 /**
  * Document: Operacao
- * @author : Leonardo Baiser <lpbaiser@gmail.com>
+ * @author : Leonardo Baiser <lpbaiser@gmail.com> & Emanuel Mazzer <emanuelgiroldo@gmail.com>
  * @since : Nov 29, 2015, 8:38:34 PM
  */
 public class Operacao {

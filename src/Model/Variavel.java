@@ -3,7 +3,7 @@ package Model;
 /**
  * Document: Dado
  *
- * @author : Leonardo Baiser <lpbaiser@gmail.com>
+ * @author : Leonardo Baiser <lpbaiser@gmail.com> & Emanuel Mazzer <emanuelgiroldo@gmail.com>
  * @since : Nov 29, 2015, 8:19:11 PM
  */
 public class Variavel {

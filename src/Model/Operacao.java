@@ -11,6 +11,7 @@ public class Operacao {
     private String tipoOperacao;
     private int id;
     private boolean wait;
+    
 
     public Variavel getVariavel() {
         return variavel;
@@ -43,6 +44,7 @@ public class Operacao {
     public void setWait(boolean wait) {
         this.wait = wait;
     }
+    
     
 
 }

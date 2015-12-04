@@ -15,9 +15,9 @@ public class Escalonador {
     private List<Operacao> agenda;
     private List<Variavel> variaveis;
 
-    public Escalonador(List<Operacao> operacoes, List<Variavel> dados) {
+    public Escalonador(List<Operacao> operacoes, List<Variavel> variaveis) {
         this.operacoes = operacoes;
-        this.variaveis = dados;
+        this.variaveis = variaveis;
         
     }
 

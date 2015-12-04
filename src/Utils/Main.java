@@ -46,8 +46,8 @@ public class Main {
                     escalonador = new Escalonador(agenda, variaveis);
                     agenda = new ArrayList<>();
                     agenda = escalonador.escalonar();
-                System.out.println("Agenda escalonada!\n");
-                }else{
+                    System.out.println("Agenda escalonada!\n");
+                } else {
                     System.out.println("Nenhuma agenda recebida!");
                 }
             } else if (op == 3) {
@@ -57,8 +57,8 @@ public class Main {
                     System.out.println("Digite o nome e a extenção para o arquivo \n >>> ");
                     String path = scanner.next();
                     arquivo.writeAgenda(path, agenda);
-                System.out.println("Agenda gravada!\n");
-                }else{
+                    System.out.println("Agenda gravada!\n");
+                } else {
                     System.out.println("Nenhuma agenda recebida!");
                 }
             } else if (op == 5) {

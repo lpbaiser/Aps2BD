@@ -2,7 +2,6 @@ package Utils;
 
 import Model.Variavel;
 import Model.Operacao;
-import Model.Transacao;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -27,13 +26,10 @@ public class Arquivo {
     private List<Variavel> variaveis;
     private Operacao operacao;
     private List<Operacao> operacoes;
-    private Transacao trasacao;
-    private List<Transacao> trasacoes;
 
     public List<Operacao> readAgenda(String path, List<Variavel> dados) {
         String linha = "";
         String t[];
-        trasacoes = new ArrayList<Transacao>();
         int id;
 
         try {
@@ -48,7 +44,6 @@ public class Arquivo {
         while (linha != null) {
 
             operacoes = new ArrayList<>();
-            trasacao = new Transacao();
 
             linha = linha.replaceAll(" ", "");
             t = linha.split(";");
@@ -149,7 +144,7 @@ public class Arquivo {
 
     public List<Operacao> writeAgenda(String caminho,List<Operacao> operacao) {
         try {
-            BufferedWriter buffwirter = new BufferedWriter(new FileWriter(caminho));
+            BufferedWriter buffwirter = new BufferedWriter(new FileWriter("../"+caminho));
             for (Operacao op :operacao ) {
                 if(op.getTipoOperacao().equals("C")){
                     buffwirter.append(op.getVariavel().getDado()+";");

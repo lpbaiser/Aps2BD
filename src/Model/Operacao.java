@@ -7,17 +7,17 @@ package Model;
  */
 public class Operacao {
     
-    private Variavel dado;
+    private Variavel variavel;
     private String tipoOperacao;
     private int id;
     private boolean wait;
 
-    public Variavel getDado() {
-        return dado;
+    public Variavel getVariavel() {
+        return variavel;
     }
 
-    public void setDado(Variavel dado) {
-        this.dado = dado;
+    public void setVariavel(Variavel dado) {
+        this.variavel = dado;
     }
 
     public String getTipoOperacao() {

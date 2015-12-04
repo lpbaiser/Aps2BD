@@ -23,8 +23,8 @@ public class Arquivo {
 
     private FileReader fileRead;
     private BufferedReader buffArquivo;
-    private Variavel dado;
-    private List<Variavel> dados;
+    private Variavel variavel;
+    private List<Variavel> variaveis;
     private Operacao operacao;
     private List<Operacao> operacoes;
     private Transacao trasacao;
@@ -56,20 +56,20 @@ public class Arquivo {
             for (int i = 0; i < t.length; i++) {
 
                 operacao = new Operacao();
-                dado = getVariavel(dados, t[i]);
+                variavel = getVariavel(dados, t[i]);
                 char c = t[i].charAt(1);
                 id = Character.getNumericValue(c);
                 if (t[i].contains("(")) {
 
                     if (t[i].contains("W")) {
-                        operacao.setDado(dado);
+                        operacao.setVariavel(variavel);
                         operacao.setTipoOperacao("W");
                     } else if (t[i].contains("R")) {
-                        operacao.setDado(dado);
+                        operacao.setVariavel(variavel);
                         operacao.setTipoOperacao("R");
                     }
                 } else {
-                    operacao.setDado(dado);
+                    operacao.setVariavel(variavel);
                     operacao.setTipoOperacao("C");
                 }
                 operacao.setId(id);
@@ -89,7 +89,7 @@ public class Arquivo {
     }
 
     public List<Variavel> getVariaveis(String path) {
-        dados = new ArrayList<>();
+        variaveis = new ArrayList<>();
         String linha = "";
         String aux[];
 
@@ -102,23 +102,22 @@ public class Arquivo {
                 linha = linha.replaceAll(" ", "");
                 aux = linha.split(";");
                 for (int i = 0; i < aux.length; i++) {
-                    dado = new Variavel();
+                    variavel = new Variavel();
                     if (aux[i].contains("(")) {
                         String p[];
                         aux[i] = aux[i].replace(')', '(');
                         p = aux[i].split("\\(");
-                        dado.setDado(p[1]);
-                        dado.setTipoLock("U");
+                        variavel.setDado(p[1]);
+                        variavel.setTipoLock("U");
 
-                        if (!dados.contains(dado)) {
-                            dados.add(dado);
+                        if (!variaveis.contains(variavel)) {
+                            variaveis.add(variavel);
                         }
                     } else if (aux[i].contains("C")) {
-                        System.out.println("AUX: " + aux[i]);
-                        dado.setDado(aux[i]);
-                        dado.setTipoLock("C");
-                        if (!dados.contains(dado)) {
-                            dados.add(dado);
+                        variavel.setDado(aux[i]);
+                        variavel.setTipoLock("C");
+                        if (!variaveis.contains(variavel)) {
+                            variaveis.add(variavel);
                         }
                     }
                 }
@@ -130,7 +129,7 @@ public class Arquivo {
             return null;
         }
 
-        return dados;
+        return variaveis;
     }
 
     public Variavel getVariavel(List<Variavel> dados, String dado) {
@@ -153,9 +152,9 @@ public class Arquivo {
             BufferedWriter buffwirter = new BufferedWriter(new FileWriter(caminho));
             for (Operacao op :operacao ) {
                 if(op.getTipoOperacao().equals("C")){
-                    buffwirter.append(op.getDado().getDado()+";");
+                    buffwirter.append(op.getVariavel().getDado()+";");
                 }else{
-                    buffwirter.append(op.getTipoOperacao()+op.getId()+"("+op.getDado().getDado()+")"+";");
+                    buffwirter.append(op.getTipoOperacao()+op.getId()+"("+op.getVariavel().getDado()+")"+";");
                 }
 
             }
